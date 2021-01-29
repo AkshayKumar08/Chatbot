@@ -1,5 +1,5 @@
 function welcome(agent) {
-    agent.add('Hi, I am assistant. I can help you in various service. How can I help you today?');
+    agent.add('Welcome to Blah Blah Broadband!! Can you please provide you phone number?');
 }
 
 function defaultFallback(agent) {
@@ -20,9 +20,10 @@ async function getMobile(agent){
         const result = await db.collection('Users').findOne(query)
         if(!result)
             return agent.add('No User with Mobile number found!!!')
-        agent.add(`Hello, ${result.username}. Please enter your issue Title. Start with title keyword`)
+        agent.add(`Hello, ${result.username}. How can I help you`);
     }
     catch(err){
+        agent.add('Something went wrong. Please try again later');
         console.log(err);
     }
 }
@@ -47,8 +48,7 @@ function getDescription(agent){
 }
 
 async function getForm(agent){
-	const confirm = agent.context.contexts.confirm;
-
+	const confirm = agent.context.contexts.awaiting_mobile;
 	const mobile = confirm.parameters['mobile.original'];
 	const title = confirm.parameters['title.original'];
 	const description = confirm.parameters['desc.original'];
@@ -77,10 +77,15 @@ async function getForm(agent){
     	const User = await db.collection('Users').findOne(query)
     	const Result = await db.collection('Issues').insertOne(Issue)
     	agent.add(`your issue has been register on ${ Issue.date }.
-    			title: ${ Issue.title } \n. 
-    			description: ${ Issue.description } \n. 
+    			title: ${ Issue.title }. \n 
+    			description: ${ Issue.description }. \n
     			Your trouble ticket is ${ Issue.trouble_ticket }`);
+
+        agent.context.delete('awaiting_title');
+        agent.context.delete('awaiting_description');
+        agent.context.delete('getDescription-followup');
     }catch(err){
+        agent.add('Something went wrong. Please try again later');
     	console.log(err);
     }
 
@@ -88,9 +93,11 @@ async function getForm(agent){
 
 function rejectForm(agent) {
     agent.add('Your Issue was not registered');
-    agent.context.delete('await_mobile');
-    agent.context.delete('await_title');
-    agent.context.delete('await_description');
+    agent.context.delete('awaiting_title');
+    agent.context.delete('awaiting_description');
+    agent.context.delete('registercomplaint-followup');
+    agent.context.delete('getTitle-followup');
+    agent.context.delete('getDescription-followup');
 }
 
 

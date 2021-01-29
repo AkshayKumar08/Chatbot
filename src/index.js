@@ -24,6 +24,8 @@ app.post("/dialogflow", express.json(), async (req, res) => {
     intentMap.set("Get Description", intent.getDescription);
     intentMap.set("Confirm Form Yes", intent.getForm);
     intentMap.set("Confirm Form No", intent.rejectForm);
+    intentMap.set("Register Complaint - no", intent.rejectForm);
+    intentMap.set("Get Title - no", intent.rejectForm);
     try{
     	return await agent.handleRequest(intentMap);
 	}
