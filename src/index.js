@@ -16,7 +16,7 @@ const mongoUtil = require('./mongoUtil');
 app.post("/dialogflow", express.json(), async (req, res) => {
     const agent = new WebhookClient({ request: req, response: res });
     let intentMap = new Map();
-    intentMap.set("Default Welcome Intent", intent.welcome);    
+    intentMap.set("Default Welcome Intent", intent.welcome);
     intentMap.set("Default Fallback Intent", intent.defaultFallback);
     intentMap.set("Register Complaint", intent.complaint);
     intentMap.set("Get Mobile Number", intent.getMobile);

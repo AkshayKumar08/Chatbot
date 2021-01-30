@@ -12,6 +12,6 @@ MongoClient.connect(url, {useUnifiedTopology: true}, async (err, client) => {
     catch(err){
         console.log(err);
     }
-})
+});
 
-module.exports = MongoClient
+module.exports = MongoClient;

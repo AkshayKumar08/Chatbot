@@ -60,10 +60,6 @@ async function getForm(agent){
 	const status = 'Pending';
 	const trouble_ticket = Math.random().toString(36).slice(2);
 
-	const query = {
-		mobile: mobile
-	};
-
 	const Issue = {
         mobile: mobile,
         title: title,
@@ -74,7 +70,6 @@ async function getForm(agent){
     };
     
     try{
-    	const User = await db.collection('Users').findOne(query)
     	const Result = await db.collection('Issues').insertOne(Issue)
     	agent.add(`your issue has been register on ${ Issue.date }.
     			title: ${ Issue.title }. \n 
